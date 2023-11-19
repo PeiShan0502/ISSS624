@@ -7,4 +7,4 @@ Welcome to ISSS624 Applied Geospatial Analytics!
 
 In this webpage, I am going to share with you my learning journey of geospatial analytics :)
 
-![](images/geospatial-01.png){fig-align="center"}
+![](images/geospatial.png){fig-align="center"}
