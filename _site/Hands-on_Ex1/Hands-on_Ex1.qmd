@@ -8,17 +8,160 @@ In this hands-on exercise, I learn how to import and wrangle geospatial data usi
 
 ## Getting Started
 
-The code chunk below installs and load [sf](https://r-spatial.github.io/sf/) and [tidyverse](https://www.tidyverse.org/) packages into R environment.
+In this hands-on exercise, two R packages will be used. They are:
+
+-   [**sf**](https://r-spatial.github.io/sf/) for importing, managing, and processing geospatial data, and
+
+-   [**tidyverse**](https://www.tidyverse.org/) for performing data science tasks such as importing, wrangling and visualising data (not specific to geospatial data).
+
+The code chunk below installs and load **sf** and **tidyverse** packages into R environment.
 
 ```{r}
 pacman::p_load(sf, tidyverse)
 
 ```
 
+Furthermore, the tidyverse package consists of a family of R packages. In this hands-on exercise, the following packages will be used:
+
+-   **readr** for importing csv data,
+
+-   **readxl** for importing Excel worksheet,
+
+-   **tidyr** for manipulating data,
+
+-   **dplyr** for transforming data, and
+
+-   **ggplot2** for visualising data
+
+Note: In the above code chunk, [`p_load`](https://cran.r-project.org/web/packages/pacman/pacman.pdf) function pf [**pacman**](https://github.com/trinker/pacman) package is used to install and load **sf** and **tidyverse** packages into R environment.
+
+## Data Sources
+
+We will extract the following data sets from these sources:
+
+-   Master Plan 2014 Subzone Boundary (Web) from [data.gov.sg](https://data.gov.sg/)
+
+-   Pre-Schools Location from [data.gov.sg](https://data.gov.sg/)
+
+-   Cycling Path from [LTADataMall](https://www.mytransport.sg/content/mytransport/home/dataMall.html)
+
+-   Latest version of Singapore Airbnb listing data from [Inside Airbnb](http://insideairbnb.com/get-the-data.html)
+
+### Extracting the geospatial data sets
+
+At the `Hands-on_Ex1` folder, we create a sub-folder called `data`. Then, inside the `data` sub-folder, we create two sub-folders and name them `geospatial` and `aspatial` respectively.
+
+We place `Master Plan 2014 Subzone Boundary (Web)`, `Pre-Schools Location`, and `Cycling Path` zipped files into the `geospatial` sub-folder and unzip them. Then, copy the unzipped files from their respective sub-folders and place them inside `geospatial` sub-folder.
+
+### Extracting the aspatial data set
+
+We place the Singapore AirBnB listing data (`listing.csv`) into the `aspatial` sub-folder.
+
 ## Importing Geospatial Data
 
+In this section, we will learn how to import the following geospatial data into R by using [`st_read()`](https://r-spatial.github.io/sf/reference/st_read.html) of **sf** package:
+
+-   `MP14_SUBZONE_WEB_PL`, a polygon feature layer in ESRI shapefile format,
+
+-   `CyclingPath`, a line feature layer in ESRI shapefile format, and
+
+-   `PreSchool`, a point feature layer in kml file format.
+
 ### Importing polygon feature data
+
+The code chunk below uses *st_read()* function of **sf** package to import `MP14_SUBZONE_WEB_PL` shapefile into R as a polygon feature data frame. When the input geospatial data is in shapefile format, two arguments will be used:
+
+-   `dsn` to define the data path
+
+-   `layer` to provide the shapefile name
+
+No extension such as .shp, .dbf, .prj and .shx are needed.
 
 ```{r}
 mpsz <- st_read(dsn = "data/geospatial", layer = "MP14_SUBZONE_WEB_PL")
 ```
+
+The message above reveals that the geospatial objects are multipolygon features. There are a total of 323 multipolygon features and 15 fields in `mpsz` simple feature data frame. `mpsz` is in **svy21** projected coordinates systems. The bounding box provides the x extend and y extend of the data.
+
+### Importing polyline feature data in shapefile form
+
+The code chunk below uses st_read() function of sf package to import Cycling Path shapefile into R as line feature data frame.
+
+```{r}
+cyclingpath = st_read(dsn = 'data/geospatial', 
+                      layer = 'CyclingPathGazette')
+```
+
+The message above reveals that there are a total of 2558 features and 2 fields in `cyclingpath` linestring feature data frame and it is in **svy21** projected coordinates system too.
+
+### Importing GIS data in kml format
+
+The `PreSchoolsLocation` is in kml format. The code chunk below will be used to import it into R. Notice that the kml file extension is provided:
+
+```{r}
+preschool = st_read("data/geospatial/PreSchoolsLocation.kml")
+```
+
+The message above reveals that `preschool` is a point feature data frame. There are a total of 2290 features and 2 fields. preschool is also in **wgs84** coordinates system (different from the previous two simple feature data frame).
+
+## Checking the Content of a Simple Feature Data Frame
+
+In this sub-section, we will look at different ways to retrieve information related to the content of a single feature data frame.
+
+### Working with *st_geometry()*
+
+The column in the sf data frame that contains the geometries is a list, of class `sfc`. We can retrieve this list by using *st_geometry()* as shown in the code chunk below:
+
+```{r}
+st_geometry(mpsz)
+```
+
+### Working with *glimpse()*
+
+We use *glimpse()* of the **dplyr** package to learn more about the associated attribute information in the data frame:
+
+```{r}
+glimpse(mpsz)
+```
+
+*glimpse()* report reveals the data type of each fields. For example `FMEL-UPD_D` field is in **date** data type and `X_ADDR`, `Y_ADDR`, `SHAPE_L` and `SHAPE_AREA` fields are all in **double-precision values**.
+
+### Working with *head()*
+
+We use [*head()*](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/head) to reeal complete information of a feature object:
+
+```{r}
+head(mpsz, n=5)
+```
+
+| Note: n=5 specifies the number of records to display.
+
+## Plotting the Geospatial Data
+
+In geospatial data science, by looking at the feature information is not enough. We are also interested to visualise the geospatial features. We use *plot()* of R Graphic to do this:
+
+```{r}
+plot(mpsz)
+```
+
+The default plot of an sf object is a multi-plot of all attributes, up to a reasonable maximum as shown above. We can, however, choose to plot only the geometry by using the code chunk below:
+
+```{r}
+plot(st_geometry(mpsz))
+```
+
+Alternatively, we can also choose the plot the sf object by using a specific attribute as shown in the code chunk below:
+
+```{r}
+plot(mpsz['PLN_AREA_N'])
+```
+
+| Note: *plot()* is meant for plotting the geospatial object for quick look.
+
+## Working with Projection
+
+To perform geoprocessing using two geospatial data, need to ensure both geospatial data are projected using similar coordinate system.
+
+Here we will learn how to project a simple feature data frame from one coordinate system to another coordinate system. This is known as **projection transformation**.
+
+### Assigning EPSG code to a simple feature data frame
