@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "ISSS624",
     "section": "",
-    "text": "Welcome to ISSS624 Geospatial Analytics Applications!\nIn this webpage, I am going to share with you my learning journey of geospatial analytics.\n\n1 + 1\n\n[1] 2"
+    "text": "Welcome to ISSS624 Applied Geospatial Analytics!\nIn this webpage, I am going to share with you my learning journey of geospatial analytics :)"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "This webpage contains the hands-on exercises, in-class exercises, and take-home exercises of ISSS624 Applied Geospatial Analytics, offered under the Singapore Management University (SMU) Masters of IT in Business (MITB) programme."
   },
   {
     "objectID": "Hands-on_Ex1.html",
@@ -33,5 +33,12 @@
     "title": "Hands-on Exercise 1",
     "section": "Getting Started:",
     "text": "Getting Started:\nThis is the getting started paragraph."
+  },
+  {
+    "objectID": "about.html#about-this-site",
+    "href": "about.html#about-this-site",
+    "title": "About",
+    "section": "",
+    "text": "This site contains the hands-on exercises, in-class exercises, and take-home exercises of ISSS624 Applied Geospatial Analytics, offered under the Singapore Management University (SMU) Masters of IT in Business (MITB) programme."
   }
 ]

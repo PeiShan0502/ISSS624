@@ -1,11 +1,10 @@
 ---
 title: "ISSS624"
+author: "Kwok Pei Shan"
 ---
 
-Welcome to ISSS624 Geospatial Analytics Applications!
+Welcome to ISSS624 Applied Geospatial Analytics!
 
-In this webpage, I am going to share with you my learning journey of geospatial analytics.
+In this webpage, I am going to share with you my learning journey of geospatial analytics :)
 
-```{r}
-1 + 1
-```
+![](images/geospatial-01.png){fig-align="center"}
