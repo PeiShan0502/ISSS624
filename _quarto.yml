@@ -7,8 +7,8 @@ website:
     left: 
       - text: Hands-On Exercises
         menu: 
-          - text: Hands-On Exercise 1
-            href: Hands-on_Ex1/Hands-on_Ex1.html
+          - text: Hands-On Exercise 1A
+            href: Hands-on_Ex1/Hands-on_Ex1A.html
           - text: Hands-On Exercise 1B
             href: Hands-on_Ex1/Hands-on_Ex1B.html
     right:
