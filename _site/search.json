@@ -7,41 +7,6 @@
     "text": "Welcome to ISSS624 Applied Geospatial Analytics!\nIn this webpage, I am going to share with you my learning journey of geospatial analytics :)"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "This webpage contains the hands-on exercises, in-class exercises, and take-home exercises of ISSS624 Applied Geospatial Analytics, offered under the Singapore Management University (SMU) Masters of IT in Business (MITB) programme."
-  },
-  {
-    "objectID": "Hands-on_Ex1.html",
-    "href": "Hands-on_Ex1.html",
-    "title": "Hands-on Exercise 1",
-    "section": "",
-    "text": "This is the overview paragraph."
-  },
-  {
-    "objectID": "Hands-on_Ex1.html#overview",
-    "href": "Hands-on_Ex1.html#overview",
-    "title": "Hands-on Exercise 1",
-    "section": "",
-    "text": "This is the overview paragraph."
-  },
-  {
-    "objectID": "Hands-on_Ex1.html#getting-started",
-    "href": "Hands-on_Ex1.html#getting-started",
-    "title": "Hands-on Exercise 1",
-    "section": "Getting Started:",
-    "text": "Getting Started:\nThis is the getting started paragraph."
-  },
-  {
-    "objectID": "about.html#about-this-site",
-    "href": "about.html#about-this-site",
-    "title": "About",
-    "section": "",
-    "text": "This site contains the hands-on exercises, in-class exercises, and take-home exercises of ISSS624 Applied Geospatial Analytics, offered under the Singapore Management University (SMU) Masters of IT in Business (MITB) programme."
-  },
-  {
     "objectID": "Hands-on_Ex1/Hands-on_Ex1.html",
     "href": "Hands-on_Ex1/Hands-on_Ex1.html",
     "title": "Hands-on Exercise 1A: Geospatial Data Wrangling with R",
@@ -117,6 +82,13 @@
     "title": "Hands-on Exercise 1A: Geospatial Data Wrangling with R",
     "section": "Exploratory Data Analysis (EDA)",
     "text": "Exploratory Data Analysis (EDA)\nHere, we will learn how to use appropriate ggplot2 functions to create graphs for EDA purposes.\nFirstly, we will plot a histogram to reveal the distribution of PreSch Density. Conventionally, hist() of R Graphics will be used as shown in the code chunk below.\n\nhist(mpsz3414$`PreSch Density`)\n\n\n\n\nThis is easy to use but the output is far from presentable and this function has limited room for further customisation.\nIn the code chunk below, we use appropriate ggplot2 functions:\n\nggplot(data=mpsz3414, \n       aes(x= as.numeric(`PreSch Density`)))+\n  geom_histogram(bins=20, \n                 color=\"black\", \n                 fill=\"light blue\") +\n  labs(title = \"Are pre-schools even distributed in Singapore?\",\n       subtitle= \"There are many planning sub-zones with a single pre-school, on the other hand, \\nthere are two planning sub-zones with at least 20 pre-schools\",\n      x = \"Pre-school density (per km sq)\",\n      y = \"Frequency\")\n\n\n\n\nWe use ggplot2 method to plot a scatterplot showing the relationship between Pre-school Density and Pre-school count:\n\nggplot(data=mpsz3414, \n       aes(y = `PreSch Count`, \n           x= as.numeric(`PreSch Density`)))+\n  geom_point(color=\"black\", \n             fill=\"light blue\") +\n  xlim(0, 40) +\n  ylim(0, 40) +\n  labs(title = \"\",\n      x = \"Pre-school density (per km sq)\",\n      y = \"Pre-school count\")\n\nWarning: Removed 2 rows containing missing values (`geom_point()`)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This webpage contains the hands-on exercises, in-class exercises, and take-home exercises of ISSS624 Applied Geospatial Analytics, offered under the Singapore Management University (SMU) Masters of IT in Business (MITB) programme."
   },
   {
     "objectID": "Hands-on_Ex1/Hands-on_Ex1B.html",
