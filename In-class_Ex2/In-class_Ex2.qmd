@@ -1,0 +1,95 @@
+---
+title: "In-Class Exercise 2A: SIM"
+date: "25 November 2023"
+date-modified: "last-modified"
+---
+
+## Getting Started
+
+### Installing and Loading the R Packages
+
+Four R packages will be used for this in-class exercise, they are, sf, sfdep, tmap, tidyverse. we will also use knitr package to create html table:
+
+```{r}
+pacman::p_load(sf, sfdep, tmap, tidyverse, knitr)
+```
+
+Either `pacman::p_load(…)` or load the pacman package first, then just need to write `p_load(…)`
+
+## The Data
+
+For the purpose of this in-class exercise, the Hunan data sets will be used. There are two data sets:
+
+-   Hunan, a geospatial data set in ESRI shapefile format, and
+
+-   Hunan_2012, an attribute data in csv format.
+
+### **Import shapefile into R environment**
+
+uses [*st_read()*](https://r-spatial.github.io/sf/reference/st_read.html) of **sf** package to import Hunan shapefile into R. The imported shapefile will be **simple features** Object of **sf**.
+
+```{r}
+hunan <- st_read(dsn = "data/geospatial", 
+                 layer = "Hunan")
+```
+
+### **Import attribute data into R environment**
+
+Next, we will import *Hunan_2012.csv* into R by using *read_csv()* of **readr** package. The output is R data frame class.
+
+```{r}
+hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
+```
+
+### **Performing relational join**
+
+The code chunk below will be used to update the attribute table of *hunan*'s SpatialPolygonsDataFrame with the attribute fields of *hunan2012* dataframe. This is performed by using *left_join()* of **dplyr** package.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+hunan_GDPPC <- left_join(hunan,hunan2012) %>%
+  select(1:4, 7, 15)
+```
+
+In order to retain the geospatial properties, the left data frame must be the sf daa frame (i.e., hunan). if do right join, then all the geometric properties will be lost.
+
+Notice that the column with geometric feature is automatically retained (left_join of tidyverse package). if use left_join of Base R package, then column with geometric feature would be dropped.
+
+## Plot Choropleth Map
+
+## Deriving Contiguity Spatial Weights
+
+### Deriving contiguity weights: Queen's method
+
+In the code chunk below, queen method is used to derive the contiguity weights.
+
+```{r}
+wm_q <- hunan_GDPPC %>%
+  mutate(nb = st_contiguity(geometry),
+         wt = st_weights(nb, 
+                         style = "W"),
+         .before = 1)
+```
+
+Notice that `st_weights()` provides three arguments, they are:
+
+-   *nb*: A neighbour list object created by st_neighbours()
+
+-   *style*: Default "W" for row standardised weights.
+
+-   *.before*: if it's equal to 1, it will add the *nb* column and *wt* column as the first two columns in the wm_q data table.
+
+Computing local Moran's I
+
+In this section, we will learn how to compute Local Moran's I of GDPPC, at county level by using `local_moran()` of sfdep package.
+
+```{r}
+lisa <- wm_q %>%
+  mutate(local_moran = local_moran(
+    GDPPC, nb, wt, nsim = 99),
+    .before = 1) %>%
+  unnest(local_moran)
+```
+
+(unnest to unnest the list)
