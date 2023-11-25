@@ -1,6 +1,9 @@
 ---
 title: "In-class Exercise 2C: EHSA"
+date-modified: "last-modified"
 ---
+
+**NOT complete yet**
 
 ```{r}
 pacman::p_load(sf, sfdep, tmap, plotly, tidyverse)
@@ -11,6 +14,7 @@ Time-Space Cube
 space_time() of sfdep is used to create a spacetime cube.
 
 ```{r}
+#| eval: false
 GDPPC_st <- spacetime(GDPPC, hunan,
                       .loc_col = "County",
                       .time_col = "Year")
@@ -19,10 +23,12 @@ GDPPC_st <- spacetime(GDPPC, hunan,
 Next, `is_spacetime_cube()` of sfdep package will be used to cerify if GDPPC_st is indeed an space time cube object. if it returns TRUE , confirms that GDPPC_st is indeed an time space cube.
 
 ```{r}
+#| eval: false
 is_spacetime_cube(GDPPC_st)
 ```
 
 ```{r}
+#| eval: false
 GDPPC_nb <- GDPPC_st %>%
   activate("geometry") %>%
     mutate()
@@ -33,6 +39,7 @@ Computing Gi\*
 We can use these new columns to manually calculate the local Gi\* for each location, we can do this by grouping by Year and using `local_gstar_perm()` of sfdep package. After which, we use `unnest()` to unnest `gf_star` column of the newly created `gi_star`s data frame.
 
 ```{r}
+#| eval: false
 gi_stars <- GDPPC_nb %>%
   group_by(Year) %>%
   mutate(gi_star = local_gstar_perm(
