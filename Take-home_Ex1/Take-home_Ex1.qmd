@@ -320,8 +320,82 @@ We would now like to display the geographical distribution of the passenger trip
 
 [Weekday morning peak: 6am to 9am]{.underline}
 
+```{r}
+tm_shape(hexData6_9)+
+  tm_fill("TOT_TRIPS", 
+          style = "quantile", 
+          palette = "Blues",
+          title = "Passenger trips") +
+  tm_layout(main.title = "Passenger trips generated at hexagon level on Weekday morning peak (6am to 9am)",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar() +
+  tm_grid(alpha =0.2)
+```
+
 [Weekday afternoon peak: 5pm to 8pm]{.underline}
+
+```{r}
+tm_shape(hexData17_20)+
+  tm_fill("TOT_TRIPS", 
+          style = "quantile", 
+          palette = "Blues",
+          title = "Passenger trips") +
+  tm_layout(main.title = "Passenger trips generated at hexagon level on Weekday afternoon peak (5pm to 8pm)",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar() +
+  tm_grid(alpha =0.2)
+```
 
 [Weekend/holiday morning peak: 11am to 2pm]{.underline}
 
+```{r}
+tm_shape(hexData11_14)+
+  tm_fill("TOT_TRIPS", 
+          style = "quantile", 
+          palette = "Blues",
+          title = "Passenger trips") +
+  tm_layout(main.title = "Passenger trips generated at hexagon level on Weekend morning peak (11am to 2pm)",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar() +
+  tm_grid(alpha =0.2)
+```
+
 [Weekend/holiday evening peak: 4pm to 7pm]{.underline}
+
+```{r}
+tm_shape(hexData16_19)+
+  tm_fill("TOT_TRIPS", 
+          style = "quantile", 
+          palette = "Blues",
+          title = "Passenger trips") +
+  tm_layout(main.title = "Passenger trips generated at hexagon level on Weekday evening peak (4pm to 7pm)",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.45, 
+            legend.width = 0.35,
+            frame = TRUE) +
+  tm_borders(alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar() +
+  tm_grid(alpha =0.2)
+```
+
+## **Task 2: Local Indicators of Spatial Association (LISA) Analysis**
