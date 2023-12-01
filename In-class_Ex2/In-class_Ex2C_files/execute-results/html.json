@@ -1,0 +1,14 @@
+{
+  "hash": "53b6c801537eeda94a48ec0441bacc9a",
+  "result": {
+    "markdown": "---\ntitle: \"In-class Exercise 2C: EHSA\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(sf, sfdep, tmap, plotly, tidyverse)\n```\n:::\n\n\nTime-Space Cube\n\nspace_time() of sfdep is used to create a spacetime cube.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nGDPPC_st <- spacetime(GDPPC, hunan,\n                      .loc_col = \"County\",\n                      .time_col = \"Year\")\n```\n:::\n\n\nNext, `is_spacetime_cube()` of sfdep package will be used to cerify if GDPPC_st is indeed an space time cube object. if it returns TRUE , confirms that GDPPC_st is indeed an time space cube.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nis_spacetime_cube(GDPPC_st)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nGDPPC_nb <- GDPPC_st %>%\n  activate(\"geometry\") %>%\n    mutate()\n```\n:::\n\n\nComputing Gi\\*\n\nWe can use these new columns to manually calculate the local Gi\\* for each location, we can do this by grouping by Year and using `local_gstar_perm()` of sfdep package. After which, we use `unnest()` to unnest `gf_star` column of the newly created `gi_star`s data frame.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ngi_stars <- GDPPC_nb %>%\n  group_by(Year) %>%\n  mutate(gi_star = local_gstar_perm(\n    GDPPC, nb, wt)) %>%\n  tidyr::unnest(gi_star)\n```\n:::\n\n\nPerforming Emerging Hotspot Analysis\n\nneed this for take-home exercise 1\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
