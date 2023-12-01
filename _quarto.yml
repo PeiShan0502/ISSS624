@@ -20,7 +20,12 @@ website:
       - text: In-Class Exercises
         menu: 
           - text: In-Class Exercise 1
-          - text: In-Class Exercise 2
+          - text: In-Class Exercise 2A
+            href: In-class_Ex2/In-class_Ex2A.html
+          - text: In-Class Exercise 2B
+            href: In-class_Ex2/In-class_Ex2B.html
+          - text: In-Class Exercise 2C
+            href: In-class_Ex2/In-class_Ex2C.html
     right:
       - text: Home
         href: index.qmd

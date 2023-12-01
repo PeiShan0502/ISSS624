@@ -1,0 +1,39 @@
+---
+title: "In-class Exercise 1: My First Date with Geospatial Data Science"
+---
+
+**Not complete yet**
+
+## The Task
+
+In this in-class exercise, we will prepare a choropleth map showing the distribution of passenger trips at planning sub-zone by integrating *Passenger Volume by Origin Destination Bus Stops* and bus stop data sets downloaded from LTA DataMall and Planning Sub-zone boundary of URA Master Plan 2019 downloaded from data.gov.sg.
+
+These are the specific tasks:
+
+-   import *Passenger Volume by Origin Destination Bus Stops data set* downloaded fromLTA DataMall in RStudio environment,
+
+-   import geospatial data in ESRI shapefile format into sf data frame format,
+
+-   data wrangling by using appropriate functions from tidyverse and sf packages, and
+
+-   visualise distribution of passenger trips using tmap methods and functions.
+
+## Getting Started
+
+packages we are using:
+
+-   tidyverse for non-spatial data handling,
+
+-   sf for geospatial data handling,
+
+-   tmap for thematic mapping, and
+
+-   knitr for creating html table.
+
+```{r}
+pacman::p_load(tidyverse, sf, tmap, knitr)
+```
+
+## Importing data
+
+Import the *Passenger Volume by Origin Destination Bus Stops* data set downloaded from LTA DataMall by using `read_csv()` of **readr** package.
