@@ -17,7 +17,7 @@ In this take-home exercise, the following R packages will be used:
 -   **knitr** for creating html table.
 
 ```{r}
-pacman::p_load(sf, tidyverse, tmap, knitr)
+pacman::p_load(sf, sfdep, tidyverse, tmap, knitr)
 ```
 
 ## The Data
@@ -399,3 +399,261 @@ tm_shape(hexData16_19)+
 ```
 
 ## **Task 2: Local Indicators of Spatial Association (LISA) Analysis**
+
+### Derive fixed distance spatial weights
+
+Before we can derive the fixed distance weights, we need to determine the upper limit for distance band first.
+
+[Weekday morning peak: 6am to 9am]{.underline}
+
+```{r}
+geo6_9 <- sf::st_geometry(hexData6_9)
+nb6_9 <- st_knn(geo6_9, longlat = TRUE)
+dists6_9 <- unlist(st_nb_dists(geo6_9, nb6_9))
+
+# st_nb_dists() to calculate the nearest neighbour distance. The output is a list of distances for each observation's neighbour list.
+```
+
+```{r}
+summary(dists6_9)
+```
+
+The summary statistics report above shows that the maximum nearest neighbour distance is 4272. Thus, we can use a threshold of 4300 to ensure that each area will have at least one neighbour.
+
+We compute the fixed distance weights using the code chunk below:
+
+```{r}
+#| eval: false
+wm_fd6_9 <- hexData6_9 %>%
+  mutate(nb = st_dist_band(geo6_9,
+                           upper = 4300),
+               wt = st_weights(nb),
+               .before = 1)
+
+# st_dist_band() is used to identify neighbours based on a distance band (i.e., 4300). The output is a list of neighbours nb.
+
+# st_weights() is then used to calculate polygon spatial weights of the nb list (default using row-standardised weights)
+```
+
+The code chunks below find a upper limit for distance band for the other peak periods:
+
+[Weekday afternoon peak: 5pm to 8pm]{.underline}
+
+```{r}
+geo17_20 <- sf::st_geometry(hexData17_20)
+nb17_20 <- st_knn(geo17_20, longlat = TRUE)
+dists17_20 <- unlist(st_nb_dists(geo17_20, nb17_20))
+```
+
+```{r}
+summary(dists17_20)
+```
+
+```{r}
+#| eval: false
+wm_fd17_20 <- hexData17_20 %>%
+  mutate(nb = st_dist_band(geo17_20,
+                           upper = 4300),
+               wt = st_weights(nb),
+               .before = 1)
+```
+
+[Weekend/holiday morning peak: 11am to 2pm]{.underline}
+
+```{r}
+geo11_14 <- sf::st_geometry(hexData11_14)
+nb11_14 <- st_knn(geo11_14, longlat = TRUE)
+dists11_14 <- unlist(st_nb_dists(geo11_14, nb11_14))
+```
+
+```{r}
+summary(dists11_14)
+```
+
+```{r}
+#| eval: false
+wm_fd11_14 <- hexData11_14 %>%
+  mutate(nb = st_dist_band(geo11_14,
+                           upper = 4300),
+               wt = st_weights(nb),
+               .before = 1)
+```
+
+[Weekend/holiday evening peak: 4pm to 7pm]{.underline}
+
+```{r}
+geo16_19 <- sf::st_geometry(hexData16_19)
+nb16_19 <- st_knn(geo16_19, longlat = TRUE)
+dists16_19 <- unlist(st_nb_dists(geo16_19, nb16_19))
+```
+
+```{r}
+summary(dists16_19)
+```
+
+```{r}
+#| eval: false
+wm_fd16_19 <- hexData16_19 %>%
+  mutate(nb = st_dist_band(geo16_19,
+                           upper = 4300),
+               wt = st_weights(nb),
+               .before = 1)
+```
+
+### Compute local Moran's I
+
+[Weekday morning peak: 6am to 9am]{.underline}
+
+```{r}
+#| eval: false
+lisa6_9 <- wm_fd6_9 %>%
+  mutate(local_moran = local_moran(hexData6_9, nb, wt, nsim = 99),
+         .before = 1) %>%
+  unnest(local_moran)
+```
+
+[Weekday afternoon peak: 5pm to 8pm]{.underline}
+
+```{r}
+#| eval: false
+lisa17_20 <- wm_fd17_20 %>%
+  mutate(local_moran = local_moran(hexData17_20, nb, wt, nsim = 99),
+         .before = 1) %>%
+  unnest(local_moran)
+```
+
+[Weekend/holiday morning peak: 11am to 2pm]{.underline}
+
+```{r}
+#| eval: false
+lisa11_14 <- wm_fd11_14 %>%
+  mutate(local_moran = local_moran(hexData11_14, nb, wt, nsim = 99),
+         .before = 1) %>%
+  unnest(local_moran)
+```
+
+[Weekend/holiday evening peak: 4pm to 7pm]{.underline}
+
+```{r}
+#| eval: false
+lisa16_19 <- wm_fd16_19 %>%
+  mutate(local_moran = local_moran(hexData16_19, nb, wt, nsim = 99),
+         .before = 1) %>%
+  unnest(local_moran)
+```
+
+### Visualise local Moran's I
+
+[Weekday morning peak: 6am to 9am]{.underline}
+
+```{r}
+#| eval: false
+tmap_mode("plot")
+tm_shape(lisa6_9) +
+  tm_fill("ii") + 
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8)) +
+  tm_layout(main.title = "local Moran's I of Weekday morning peak (6am to 9am)",
+            main.title.size = 0.8)
+```
+
+[Weekday afternoon peak: 5pm to 8pm]{.underline}
+
+```{r}
+#| eval: false
+tmap_mode("plot")
+tm_shape(lisa17_20) +
+  tm_fill("ii") + 
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8)) +
+  tm_layout(main.title = "local Moran's I of Weekday afternoon peak (5pm to 8pm)",
+            main.title.size = 0.8)
+```
+
+[Weekend/holiday morning peak: 11am to 2pm]{.underline}
+
+```{r}
+#| eval: false
+tmap_mode("plot")
+tm_shape(lisa11_14) +
+  tm_fill("ii") + 
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8)) +
+  tm_layout(main.title = "local Moran's I of Weekend/holiday morning peak (11am to 2pm)",
+            main.title.size = 0.8)
+```
+
+[Weekend/holiday evening peak: 4pm to 7pm]{.underline}
+
+```{r}
+#| eval: false
+tmap_mode("plot")
+tm_shape(lisa16_19) +
+  tm_fill("ii") + 
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8)) +
+  tm_layout(main.title = "local Moran's I of Weekend/holiday evening peak (4pm to 7pm)",
+            main.title.size = 0.8)
+```
+
+### Visualising LISA map
+
+[Weekday morning peak: 6am to 9am]{.underline}
+
+```{r}
+#| eval: false
+lisa_sig6_9 <- lisa6_9  %>%
+  filter(p_ii_sim < 0.05)
+tmap_mode("plot")
+tm_shape(lisa6_9) +
+  tm_polygons() +
+  tm_borders(alpha = 0.5) +
+tm_shape(lisa_sig6_9) +
+  tm_fill("mean") + 
+  tm_borders(alpha = 0.4)
+```
+
+[Weekday afternoon peak: 5pm to 8pm]{.underline}
+
+```{r}
+#| eval: false
+lisa_sig17_20 <- lisa17_20  %>%
+  filter(p_ii_sim < 0.05)
+tmap_mode("plot")
+tm_shape(lisa17_20) +
+  tm_polygons() +
+  tm_borders(alpha = 0.5) +
+tm_shape(lisa_sig17_20) +
+  tm_fill("mean") + 
+  tm_borders(alpha = 0.4)
+```
+
+[Weekend/holiday morning peak: 11am to 2pm]{.underline}
+
+```{r}
+#| eval: false
+lisa_sig11_14 <- lisa11_14  %>%
+  filter(p_ii_sim < 0.05)
+tmap_mode("plot")
+tm_shape(lisa11_14) +
+  tm_polygons() +
+  tm_borders(alpha = 0.5) +
+tm_shape(lisa_sig11_14) +
+  tm_fill("mean") + 
+  tm_borders(alpha = 0.4)
+```
+
+[Weekend/holiday evening peak: 4pm to 7pm]{.underline}
+
+```{r}
+#| eval: false
+lisa_sig16_19 <- lisa16_19  %>%
+  filter(p_ii_sim < 0.05)
+tmap_mode("plot")
+tm_shape(lisa16_19) +
+  tm_polygons() +
+  tm_borders(alpha = 0.5) +
+tm_shape(lisa_sig16_19) +
+  tm_fill("mean") + 
+  tm_borders(alpha = 0.4)
+```
