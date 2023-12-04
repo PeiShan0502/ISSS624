@@ -285,5 +285,12 @@
     "title": "In-Class Exercise 2B: Global and Local Measures of Spatial Association - sfdep methods",
     "section": "Visualising hot spot and cold spot areas",
     "text": "Visualising hot spot and cold spot areas\nNow, we are ready to plot the significant (i.e. p-values less than 0.05) hot spot and cold spot areas by using appropriate tmap functions as shown below.\n\nHCSA_sig &lt;- HCSA  %&gt;%\n  filter(p_sim &lt; 0.05)\ntmap_mode(\"plot\")\n\ntmap mode set to plotting\n\ntm_shape(HCSA) +\n  tm_polygons() +\n  tm_borders(alpha = 0.5) +\ntm_shape(HCSA_sig) +\n  tm_fill(\"gi_star\") + \n  tm_borders(alpha = 0.4)\n\nWarning: One tm layer group has duplicated layer types, which are omitted. To\ndraw multiple layers of the same type, use multiple layer groups (i.e. specify\ntm_shape prior to each of them).\n\n\nVariable(s) \"gi_star\" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.\n\n\n\n\n\nFigure above reveals that there is one hot spot area and two cold spot areas. Interestingly, the hot spot areas coincide with the High-high cluster identifies by using local Moran’s I method in the earlier sub-section."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS624",
+    "section": "",
+    "text": "Welcome to ISSS624 Applied Geospatial Analytics!\nIn this webpage, I am going to share with you my learning journey of geospatial analytics :)"
   }
 ]
