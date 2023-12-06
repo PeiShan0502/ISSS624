@@ -22,8 +22,8 @@ website:
             
       - text: In-Class Exercises
         menu: 
-          - text: In-Class Exercise 1 (incomplete)
-          
+          - text: In-Class Exercise 1
+            href: In-class_Ex1/In-class_Ex1.html
           - text: In-Class Exercise 2A
             href: In-class_Ex2/In-class_Ex2A.html
           - text: In-Class Exercise 2B
