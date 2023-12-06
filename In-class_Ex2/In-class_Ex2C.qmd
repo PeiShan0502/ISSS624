@@ -3,8 +3,6 @@ title: "In-class Exercise 2C: Emerging Hot Spot Analysis: sfdep methods"
 date-modified: "last-modified"
 ---
 
-This in-class exercise is not complete yet
-
 # **Overview**
 
 Emerging Hot Spot Analysis (EHSA) is a spatio-temporal analysis method for revealing and describing how hot spot and cold spot areas evolve over time. The analysis consist of four main steps:
@@ -26,8 +24,7 @@ As usual, `p_load()` of **pacman** package will be used to check if the necessar
 Five R packages are need for this in-class exercise, they are: sf, sfdep, tmap, plotly and tidyverse.
 
 ```{r}
-#| eval: false
-pacman::p_load(sf, sfdep, tmap, plotly, tidyverse)
+pacman::p_load(sf, sfdep, tmap, plotly, tidyverse, zoo)
 ```
 
 # **The Data**
@@ -45,7 +42,6 @@ Before getting started, reveal the content of *Hunan_GDPPC.csv* by using Notepad
 In the code chunk below, `st_read()` of **sf** package is used to import *Hunan* shapefile into R.
 
 ```{r}
-#| eval: false
 hunan <- st_read(dsn = "data/geospatial", 
                  layer = "Hunan")
 ```
@@ -55,18 +51,20 @@ hunan <- st_read(dsn = "data/geospatial",
 In the code chunk below, `read_csv()` of **readr** is used to import *Hunan_GDPPC.csv* into R.
 
 ```{r}
-#| eval: false
-GDPPC <- read_csv("data/aspatial/Hunan_GDPPC.csv")
+GDPPC <- read_csv("data/aspatial/Hunan_GDPPC.csv", show_col_types = FALSE)
+```
+
+```{r}
+glimpse(GDPPC)
 ```
 
 # **Creating a Time Series Cube**
 
 Refer to this [article](https://sfdep.josiahparry.com/articles/spacetime-s3.html) to learn the basic concept of spatio-temporal cube and its implementation in sfdep package.
 
-In the code chunk below, `spacetime()` of sfdep is used to create a spacetime cube.
+In the code chunk below, [`spacetime()`](https://sfdep.josiahparry.com/reference/spacetime.html) of sfdep is used to create a spacetime cube.
 
 ```{r}
-#| eval: false
 GDPPC_st <- spacetime(GDPPC, hunan,
                       .loc_col = "County",
                       .time_col = "Year")
@@ -75,11 +73,10 @@ GDPPC_st <- spacetime(GDPPC, hunan,
 Next, `is_spacetime_cube()` of sfdep package will be used to verify if GDPPC_st is indeed an space-time cube object. if it returns TRUE, it confirms that GDPPC_st is indeed an space-time cube.
 
 ```{r}
-#| eval: false
 is_spacetime_cube(GDPPC_st)
 ```
 
-Since it returns TRUE, this confirms that the GDPPC_st object is indeed a space-time cube.
+Since it returns TRUE, this confirms that the *GDPPC_st* object is indeed a space-time cube.
 
 ## **Computing Gi\***
 
@@ -90,7 +87,6 @@ Next, we will compute the local Gi\* statistics.
 The code chunk below will be used to identify neighbors and to derive an inverse distance weights.
 
 ```{r}
-#| eval: false
 GDPPC_nb <- GDPPC_st %>%
   activate("geometry") %>%
   mutate(nb = include_self(st_contiguity(geometry)),
@@ -115,7 +111,6 @@ Notes:
 Note that this dataset now has neighbors and weights for each time-slice.
 
 ```{r}
-#| eval: false
 head(GDPPC_nb)
 ```
 
@@ -124,7 +119,6 @@ head(GDPPC_nb)
 We can use these new columns to manually calculate the local Gi\* for each location. We can do this by grouping by *Year* and using `local_gstar_perm()` of sfdep package. After which, we `use unnest()` to unnest *gi_star* column of the newly created *gi_starts* data.frame.
 
 ```{r}
-#| eval: false
 gi_stars <- GDPPC_nb %>% 
   group_by(Year) %>% 
   mutate(gi_star = local_gstar_perm(
@@ -137,7 +131,6 @@ gi_stars <- GDPPC_nb %>%
 With these Gi\* measures we can then evaluate each location for a trend using the Mann-Kendall test. The code chunk below uses Changsha county.
 
 ```{r}
-#| eval: false
 cbg <- gi_stars %>% 
   ungroup() %>% 
   filter(County == "Changsha") |> 
@@ -147,7 +140,6 @@ cbg <- gi_stars %>%
 Next, we plot the result by using ggplot2 functions.
 
 ```{r}
-#| eval: false
 ggplot(data = cbg, 
        aes(x = Year, 
            y = gi_star)) +
@@ -158,7 +150,6 @@ ggplot(data = cbg,
 We can also create an interactive plot by using `ggploty()` of **plotly** package.
 
 ```{r}
-#| eval: false
 p <- ggplot(data = cbg, 
        aes(x = Year, 
            y = gi_star)) +
@@ -169,7 +160,6 @@ ggplotly(p)
 ```
 
 ```{r}
-#| eval: false
 cbg %>%
   summarise(mk = list(
     unclass(
@@ -182,7 +172,6 @@ In the above result, sl is the p-value. This result tells us that there is a sli
 We can replicate this for each location by using `group_by()` of dplyr package.
 
 ```{r}
-#| eval: false
 ehsa <- gi_stars %>%
   group_by(County) %>%
   summarise(mk = list(
@@ -194,7 +183,6 @@ ehsa <- gi_stars %>%
 ## **Arrange to show significant emerging hot/cold spots**
 
 ```{r}
-#| eval: false
 emerging <- ehsa %>% 
   arrange(sl, abs(tau)) %>% 
   slice(1:5)
@@ -205,7 +193,6 @@ emerging <- ehsa %>%
 Lastly, we will perform EHSA analysis by using [`emerging_hotspot_analysis()`](https://sfdep.josiahparry.com/reference/emerging_hotspot_analysis.html) of sfdep package. It takes a spacetime object x (i.e. GDPPC_st), and the quoted name of the variable of interest (i.e. GDPPC) for .var argument. The k argument is used to specify the number of time lags which is set to 1 by default. Lastly, nsim map numbers of simulation to be performed.
 
 ```{r}
-#| eval: false
 ehsa <- emerging_hotspot_analysis(
   x = GDPPC_st, 
   .var = "GDPPC", 
@@ -216,10 +203,9 @@ ehsa <- emerging_hotspot_analysis(
 
 ### **Visualising the distribution of EHSA classes**
 
-In the code chunk below, ggplot2 functions ised used to reveal the distribution of EHSA classes as a bar chart.
+In the code chunk below, ggplot2 functions is used to reveal the distribution of EHSA classes as a bar chart.
 
 ```{r}
-#| eval: false
 ggplot(data = ehsa,
        aes(x = classification)) +
   geom_bar()
@@ -229,10 +215,9 @@ Figure above shows that sporadic cold spots class has the high numbers of county
 
 ### **Visualising EHSA**
 
-In this section, you will learn how to visualise the geographic distribution EHSA classes. However, before we can do so, we need to join both *hunan* and *ehsa* together by using the code chunk below.
+In this section, we will learn how to visualise the geographic distribution EHSA classes. However, before we can do so, we need to join both *hunan* and *ehsa* together by using the code chunk below.
 
 ```{r}
-#| eval: false
 hunan_ehsa <- hunan %>%
   left_join(ehsa,
             by = join_by(County == location))
@@ -241,7 +226,6 @@ hunan_ehsa <- hunan %>%
 Next, tmap functions will be used to plot a categorical choropleth map by using the code chunk below.
 
 ```{r}
-#| eval: false
 ehsa_sig <- hunan_ehsa  %>%
   filter(p_value < 0.05)
 tmap_mode("plot")

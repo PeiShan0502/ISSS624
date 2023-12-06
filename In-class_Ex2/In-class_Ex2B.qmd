@@ -38,7 +38,7 @@ hunan <- st_read(dsn = "data/geospatial",
 Next, we will import *Hunan_2012.csv* into R by using *read_csv()* of **readr** package. The output is R data frame class.
 
 ```{r}
-hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
+hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv", show_col_types = FALSE)
 ```
 
 ### **Combining both data frame by using left join**
