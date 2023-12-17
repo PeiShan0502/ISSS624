@@ -109,7 +109,3 @@ base_model <- spflow(
 ```
 
 log(1 + \_\_\_\_) usually +1 to avoid log(0)
-
-WHAT IS SPATIAL LAG??
-
-what do we use this to understand ? (the table)
