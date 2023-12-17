@@ -82,14 +82,6 @@ mpsz_sp <- as(mpsz, "Spatial")
 mpsz_sp
 ```
 
-Alternative way of writing the above code (results in the same output):
-
-```{r}
-#| eval: false
-mpsz_sp <- mpsz %>%
-  as.Spatial()
-```
-
 ### **Computing the distance matrix**
 
 Next, [`spDists()`](https://www.rdocumentation.org/packages/sp/versions/2.1-1/topics/spDistsN1) of sp package will be used to compute the Euclidean distance between the centroids of the planning subzones.

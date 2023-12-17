@@ -33,7 +33,9 @@ website:
           - text: In-Class Exercise 3
             href: In-class_Ex3/In-class_Ex3.html
           - text: In-Class Exercise 4A
+            href: In-class_Ex4A/In-class_Ex4A.html
           - text: In-Class Exercise 4B
+            href: In-class_Ex4B/In-class_Ex4B.html
           - text: In-Class Exercise 5
 
       - text: Take-Home Exercises

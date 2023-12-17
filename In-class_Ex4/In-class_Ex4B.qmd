@@ -21,7 +21,6 @@ For the purpose of this exercise, five R packages will be used. They are:
 -   [ggpubr](https://rpkgs.datanovia.com/ggpubr/) for creating publication quality statistical graphics.
 
 ```{r}
-#| eval: false
 pacman::p_load(tmap, sf, performance, knitr,
                ggpubr, tidyverse)
 ```
@@ -35,12 +34,10 @@ This exercise is a continuation of Hands-on Exercise 3 and In-class Exercise 4: 
 -   *mpsz.rds*, URA Master Plan 2019 Planning Subzone boundary in simple feature tibble data frame format.
 
 ```{r}
-#| eval: false
 flow_data <- read_rds("data/rds/flow_data_tidy.rds")
 ```
 
 ```{r}
-#| eval: false
 glimpse(flow_data)
 ```
 
@@ -49,7 +46,6 @@ Notice that this sf tibble data.frame includes two additional fields namely: *SC
 The code chunk below is used to display the first five columns and rows of *flow_data*.
 
 ```{r}
-#| eval: false
 kable(head(flow_data[, 1:5], n = 5))
 ```
 

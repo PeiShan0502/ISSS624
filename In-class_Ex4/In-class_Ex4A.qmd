@@ -19,7 +19,6 @@ A well calibrated Spatial Interaction Model need conceptually logical and well p
 To get started, the following R packages will be loaded into R environment:
 
 ```{r}
-#| eval: false
 pacman::p_load(tidyverse, sf, httr,
                tmap)
 ```
@@ -43,7 +42,6 @@ Two tibble data.frames will be created if the geocoding process completed succes
 Lastly, the found data table will join with the initial csv data table by using a unique identifier (i.e. POSTAL) common to both data tables. The output data table will then save as an csv file called `found`.
 
 ```{r}
-#| eval: false
 url<-"https://www.onemap.gov.sg/api/common/elastic/search"
 
 csv<-read_csv("data/aspatial/Generalinformationofschools.csv")
@@ -78,7 +76,6 @@ write.csv(not_found, file = "data/aspatial/not_found.csv")
 In this sub-section, we import *schools.csv* into R environment and at the same time tidying the data by selecting only the necessary fields as well as rename some fields.
 
 ```{r}
-#| eval: false
 schools <- read_csv("data/aspatial/schools.csv") %>%
   rename(latitude = "results.LATITUDE",
          longitude = "results.LONGITUDE")%>%
@@ -92,7 +89,6 @@ Next, we will convert schools tibble data.frame data into a simple feature tibbl
 This is done using the [st_as_sf()](https://r-spatial.github.io/sf/reference/st_as_sf.html) of sf package.
 
 ```{r}
-#| eval: false
 schools_sf <- st_as_sf(schools, 
                        coords = c("longitude", "latitude"),
                        crs=4326) %>%
@@ -106,7 +102,6 @@ To ensure that *schools* sf tibble data.frame has been projected and converted c
 First, let us import *MPSZ-2019* shapefile into R environment and save it as an sf tibble data.frame called *mpsz*.
 
 ```{r}
-#| eval: false
 mpsz <- st_read(dsn = "data/geospatial/",
                 layer = "MPSZ-2019") %>%
   st_transform(crs = 3414)
@@ -115,7 +110,6 @@ mpsz <- st_read(dsn = "data/geospatial/",
 We create a point symbol map showing the location of schools with OSM as the background map.
 
 ```{r}
-#| eval: false
 tmap_options(check.and.fix = TRUE)
 tm_shape(mpsz) +
   tm_polygons() +
@@ -128,14 +122,12 @@ tm_shape(schools_sf) +
 Next, we will count the number of schools located inside the planning subzones.
 
 ```{r}
-#| eval: false
 mpsz$`SCHOOL_COUNT`<- lengths(
   st_intersects(
     mpsz, schools_sf))
 ```
 
 ```{r}
-#| eval: false
 summary(mpsz$SCHOOL_COUNT)
 ```
 
@@ -146,13 +138,11 @@ The summary statistics above reveals that there are excessive 0 values in SCHOOL
 To count number of business points in each planning subzone:
 
 ```{r}
-#| eval: false
 business_sf <- st_read(dsn = "data/geospatial",
                       layer = "Business")
 ```
 
 ```{r}
-#| eval: false
 tmap_options(check.and.fix = TRUE)
 tm_shape(mpsz) +
   tm_polygons() +
@@ -161,14 +151,12 @@ tm_shape(business_sf) +
 ```
 
 ```{r}
-#| eval: false
 mpsz$`BUSINESS_COUNT`<- lengths(
   st_intersects(
     mpsz, business_sf))
 ```
 
 ```{r}
-#| eval: false
 summary(mpsz$BUSINESS_COUNT)
 ```
 
