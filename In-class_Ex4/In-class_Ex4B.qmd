@@ -14,7 +14,7 @@ For the purpose of this exercise, five R packages will be used. They are:
 
 -   **tidyverse** for importing, integrating, wrangling and visualising data.
 
--   **tmap** for plotting cartographicquality thematic maps.
+-   **tmap** for plotting cartographic quality thematic maps.
 
 -   [performance](https://easystats.github.io/performance/) for computing model comparison matrices such as rmse.
 
@@ -41,7 +41,7 @@ flow_data <- read_rds("data/rds/flow_data_tidy.rds")
 glimpse(flow_data)
 ```
 
-Notice that this sf tibble data.frame includes two additional fields namely: *SCHOOL_COUNT* and *BUSINESS_COUNT*. Both of them will be used as attractiveness variables when calibrating origin constrained SIM.
+Notice that this sf tibble data.frame includes two additional fields namely: *SCHOOL_COUNT* and *BUSINESS_COUNT (but above output shows RETAIL_COUNT?)*. Both of them will be used as attractiveness variables when calibrating origin constrained SIM.
 
 The code chunk below is used to display the first five columns and rows of *flow_data*.
 

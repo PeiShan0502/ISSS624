@@ -76,7 +76,7 @@ write.csv(not_found, file = "data/aspatial/not_found.csv")
 In this sub-section, we import *schools.csv* into R environment and at the same time tidying the data by selecting only the necessary fields as well as rename some fields.
 
 ```{r}
-schools <- read_csv("data/aspatial/schools.csv") %>%
+schools <- read_csv("data/aspatial/schools.csv", show_col_types = FALSE) %>%
   rename(latitude = "results.LATITUDE",
          longitude = "results.LONGITUDE")%>%
   select(postal_code, school_name, latitude, longitude)

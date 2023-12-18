@@ -172,14 +172,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">In-Class Exercise 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../In-class_Ex4A/In-class_Ex4A.html" rel="" target="">
+    <a class="dropdown-item" href="../In-class_Ex4/In-class_Ex4A.html" rel="" target="">
  <span class="dropdown-text">In-Class Exercise 4A</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../In-class_Ex4B/In-class_Ex4B.html" rel="" target="">
+    <a class="dropdown-item" href="../In-class_Ex4/In-class_Ex4B.html" rel="" target="">
  <span class="dropdown-text">In-Class Exercise 4B</span></a>
   </li>  
-        <li class="dropdown-header">In-Class Exercise 5</li>
+        <li>
+    <a class="dropdown-item" href="../In-class_Ex5/In-class_Ex5.html" rel="" target="">
+ <span class="dropdown-text">In-Class Exercise 5</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -273,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p><strong>sf</strong> for importing, integrating, processing and transforming geospatial data.</p></li>
 <li><p><strong>tidyverse</strong> for importing, integrating, wrangling and visualising data.</p></li>
-<li><p><strong>tmap</strong> for plotting cartographicquality thematic maps.</p></li>
+<li><p><strong>tmap</strong> for plotting cartographic quality thematic maps.</p></li>
 <li><p><a href="https://easystats.github.io/performance/">performance</a> for computing model comparison matrices such as rmse.</p></li>
 <li><p><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a> for creating publication quality statistical graphics.</p></li>
 </ul>
@@ -312,7 +315,7 @@ $ RETAIL_COUNT    &lt;dbl&gt; 1.00, 0.99, 6.00, 0.99, 0.99, 0.99, 1.00, 117.00, 
 $ geometry        &lt;LINESTRING [m]&gt; LINESTRING (29501.77 39419...., LINESTRING …</code></pre>
 </div>
 </div>
-<p>Notice that this sf tibble data.frame includes two additional fields namely: <em>SCHOOL_COUNT</em> and <em>BUSINESS_COUNT</em>. Both of them will be used as attractiveness variables when calibrating origin constrained SIM.</p>
+<p>Notice that this sf tibble data.frame includes two additional fields namely: <em>SCHOOL_COUNT</em> and <em>BUSINESS_COUNT (but above output shows RETAIL_COUNT?)</em>. Both of them will be used as attractiveness variables when calibrating origin constrained SIM.</p>
 <p>The code chunk below is used to display the first five columns and rows of <em>flow_data</em>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(flow_data[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="at">n =</span> <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
