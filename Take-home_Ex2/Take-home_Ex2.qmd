@@ -589,7 +589,7 @@ sch <- read_csv('data/aspatial/Generalinformationofschools.csv', show_col_types 
 
 [Geocoding using SLA API]{.underline}
 
-Address geocoding, or simply geocoding, is the process of taking a aspatial description of a location, such as an address or postcode, and returning geographic coordinates, frequently latitude/longitude pair, to identify a location on the Earth\'s surface.
+Address geocoding, or simply geocoding, is the process of taking a aspatial description of a location, such as an address or postcode, and returning geographic coordinates, frequently latitude/longitude pair, to identify a location on the Earth's surface.
 
 Singapore Land Authority (SLA) supports an online geocoding service called [OneMap API](https://www.onemap.gov.sg/apidocs/). The [Search](https://www.onemap.gov.sg/apidocs/apidocs) API looks up the address data or 6-digit postal code for an entered value. It then returns both latitude, longitude and x,y coordinates of the searched location.
 
@@ -834,7 +834,6 @@ In this section, we will focus on calibrating an origin constrained SIM and a do
 Code chunk below shows the calibration of the model by using [`glm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) of R and *flow_data*.
 
 ```{r}
-#| eval: false
 orcSIM_Poisson <- glm(formula = TRIPS ~ 
                 origin_grid_id +
                 log(SCHOOL_COUNT) +
@@ -853,7 +852,6 @@ In statistical modelling, the next question we would like to answer is how well 
 In order to provide answer to this question, R-squared statistics will be used. However, R-squared is not an output of `glm()`. Hence we will write a function called `CalcRSquared` by using the code chunk below.
 
 ```{r}
-#| eval: false
 CalcRSquared <- function(observed, estimated){
   r <- cor(observed, estimated)
   R2 <- r^2
@@ -864,7 +862,6 @@ CalcRSquared <- function(observed, estimated){
 Now, we can examine how the constraints hold for destinations this time.
 
 ```{r}
-#| eval: false
 CalcRSquared(orcSIM_Poisson$data$TRIPS, orcSIM_Poisson$fitted.values)
 ```
 
@@ -873,7 +870,6 @@ With reference to the R-Squared above, we can conclude that the model accounts f
 #### **Doubly constrained model**
 
 ```{r}
-#| eval: false
 dbcSIM_Poisson <- glm(formula = TRIPS ~ 
                 origin_grid_id + 
                 destination_grid_id +
@@ -887,12 +883,11 @@ summary(dbcSIM_Poisson)
 Next, let us examine how well the proportion of variance in the dependent variable (i.e. TRIPS) that can be explained by the explanatory variables.
 
 ```{r}
-#| eval: false
 CalcRSquared(dbcSIM_Poisson$data$TRIPS,
              dbcSIM_Poisson$fitted.values)
 ```
 
-Notice that there is a relatively greater improvement in the R-Squared value.
+With reference to the R-Squared above, we can conclude that the model accounts for about 60% of the variation of flows in the systems. Notice that there is a relatively greater improvement in the R-Squared value.
 
 ## **Model comparison**
 
@@ -903,7 +898,6 @@ Another useful model performance measure for continuous dependent variable is [R
 First of all, let us create a list called *model_list* by using the code chunk below.
 
 ```{r}
-#| eval: false
 model_list <- list(
   Origin_Constrained = orcSIM_Poisson,
   Doubly_Constrained = dbcSIM_Poisson)
@@ -912,7 +906,6 @@ model_list <- list(
 Next, we will compute the RMSE of all the models in *model_list* file by using the code chunk below.
 
 ```{r}
-#| eval: false
 compare_performance(model_list,
                     metrics = "RMSE")
 ```
@@ -926,7 +919,6 @@ In this section, you will learn how to visualise the observed values and the fit
 Firstly we will extract the fitted values from Origin-constrained Model by using the code chunk below.
 
 ```{r}
-#| eval: false
 df <- as.data.frame(orcSIM_Poisson$fitted.values) %>%
   round(digits = 0)
 ```
@@ -934,7 +926,6 @@ df <- as.data.frame(orcSIM_Poisson$fitted.values) %>%
 Next, we will append the fitted values into *flow_data_tidy* data frame by using the code chunk below.
 
 ```{r}
-#| eval: false
 flow_data_tidy2 <- flow_data_tidy %>%
   cbind(df) %>%
   rename(orcTRIPS = "orcSIM_Poisson.fitted.values")
@@ -943,13 +934,11 @@ flow_data_tidy2 <- flow_data_tidy %>%
 Similarly for the Doubly Constained Model (i.e., dbcSIM_Poisson):
 
 ```{r}
-#| eval: false
 df <- as.data.frame(dbcSIM_Poisson$fitted.values) %>%
   round(digits = 0)
 ```
 
 ```{r}
-#| eval: false
 flow_data_tidy2 <- flow_data_tidy2 %>%
   cbind(df) %>%
   rename(dbcTRIPS = "dbcSIM_Poisson.fitted.values")
@@ -958,7 +947,6 @@ flow_data_tidy2 <- flow_data_tidy2 %>%
 Next, two scatterplots will be created by using [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html) and other appropriate functions of [**ggplot2**](https://ggplot2.tidyverse.org/) package.
 
 ```{r}
-#| eval: false
 orc_p <- ggplot(data = flow_data_tidy2,
                 aes(x = orcTRIPS,
                     y = TRIPS)) +
@@ -979,7 +967,6 @@ dbc_p <- ggplot(data = flow_data_tidy2,
 Now, we will put all the graphs into a single visual for better comparison by using the code chunk below.
 
 ```{r}
-#| eval: false
 ggarrange(orc_p, dbc_p,
           ncol = 2,
           nrow = 1)
